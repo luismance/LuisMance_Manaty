@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    JBoss, Home of Professional Open Source
+    Copyright 2013, Red Hat, Inc. and/or its affiliates, and individual
+    contributors by the @authors tag. See the copyright.txt in the
+    distribution for a full listing of individual contributors.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    template="/WEB-INF/templates/default.xhtml">
+    <ui:define name="content">
+    <h:head>
+    </h:head>
+    <h:body>
+    
+        <h:form id="reg">
+            <p:panelGrid id="idinput" columnClasses="titleCell" style="width:600px">
+            <f:facet name="header">
+            <p:row>
+            <p:column colspan="2">Shirt Control</p:column>
+            </p:row>
+            </f:facet>
+            <p:row>
+            <center>
+                <p:column><h:outputLabel for="name" value="ID :" /></p:column>
+                <p:column><p:inputText id="name" binding="#{shirtid}" />
+                <h:message for="name" errorClass="invalid" /></p:column>
+                
+            </center>
+			</p:row>
+			<p:row>
+			<center>
+                <p:column><h:outputLabel for="email" value="Shirt Design :" /></p:column>
+                <p:column><p:inputText id="email"  binding="#{shirtdesign}"/>
+                <h:message for="email" errorClass="invalid" /></p:column>
+            </center>
+			</p:row>
+			<p:row>
+			<center>
+                <p:column><h:outputLabel for="phoneNumber" value="Shirt Price:" /></p:column>
+                <p:column><p:inputText id="phoneNumber" binding="#{shirtprice}"/>
+                <h:message for="phoneNumber" errorClass="invalid" /></p:column>
+            </center>
+            </p:row>
+            <p:row>
+            <center>
+                <p:column><p:commandButton id="register" 
+                    	actionListener="#{shirtControl.registerShirt(shirtid.value,shirtdesign.value,shirtprice.value)}" 
+                    	value="Register" 
+                    	styleClass="register" 
+                    	ajax="true" 
+                    	update="shirtdisplay,studlist,name,email,phoneNumber" 
+                    	process="@all">
+                        <p:resetInput target="idinput"/>
+                        </p:commandButton>
+                 </p:column>
+			
+                    <h:messages styleClass="messages"
+                        errorClass="invalid" infoClass="valid"
+                        warnClass="warning" globalOnly="true" />
+                  <p:column><p:commandButton id="Edit"
+                        actionListener="#{shirtControl.updateShirt(shirtid.value,shirtdesign.value,shirtprice.value)}"
+                        value="Edit" styleClass="register" ajax="true" update="shirtdisplay,studlist,name,email,phoneNumber" process="@all">
+                        <p:resetInput target="idinput"/>
+                        </p:commandButton>
+                        </p:column>
+            </center>
+            </p:row>            
+			<p:row>
+			<center>
+                    <p:column colspan="2"><h:messages styleClass="messages"
+                        errorClass="invalid" infoClass="valid"
+                        warnClass="warning" globalOnly="true" />
+     				<h:outputLabel for="deleteshirt" value="Delete :" />
+                <h:inputText id="deleteshirt"
+                	binding="#{deleteshirtid}" />
+                <p:commandButton id="delete"
+                        action="#{shirtControl.deleteShirt(deleteshirtid.value)}"
+                        value="Delete" styleClass="register" ajax="true" update="shirtdisplay,studlist"/>
+                        </p:column>
+			</center>
+			</p:row>    
+                        
+       	</p:panelGrid>
+       
+     	<h:panelGroup id="shirtdisplay">
+       	<p:dataTable id="studlist" value="#{shirtControl.shirts}" var="sh" styleClass="simpletablestyle" style="width:600px">
+       		<p:column headerText="ID">
+       			 <h:outputText value ="#{sh.id}"/>
+       		</p:column>
+       		<p:column  headerText="Shirt Design">
+       			<h:outputText value ="#{sh.shirtdesign}"/>
+       		</p:column>
+       		<p:column headerText="Shirt Price">
+       			<h:outputText value ="#{sh.shirtprice}"/>
+       		</p:column>
+       	</p:dataTable>
+       	</h:panelGroup>
+        </h:form>
+        
+       
+        </h:body>
+    </ui:define>
+</ui:composition>
